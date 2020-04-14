@@ -34,6 +34,7 @@ def update_stack(name, template, parameters, region):
                   f' --region={region}')
 
 
-def delete_stack():
+def delete_stack(name):
     """delete specified stack"""
-    pass
+    os.system(f'aws cloudformation delete-stack'
+                  f' --stack-name {name}')
