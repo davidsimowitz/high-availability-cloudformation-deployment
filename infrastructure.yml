@@ -36,6 +36,12 @@ Resources:
         - Key: Name
           Value: !Sub ${ENV}-INTERNET-GATEWAY
 
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
