@@ -52,3 +52,11 @@ Resources:
         - Key: Name
           Value: !Sub ${ENV}-PUB-SUBNET-1
       VpcId: !Ref VPC
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PUB-ROUTES
+      VpcId: !Ref VPC
