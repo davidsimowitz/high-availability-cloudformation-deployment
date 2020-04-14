@@ -154,6 +154,33 @@ Resources:
         - !Ref UdacityS3ReadOnlyEC2
     DependsOn: UdacityS3ReadOnlyEC2
 
+  ApplicationServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH
+      GroupName: !Join ["-", [!Ref ENV, app-server-security-group, !Ref "AWS::Region"]]
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outgoing traffic
+          FromPort: 0
+          IpProtocol: tcp
+          ToPort: 65535
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow HTTP
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          Description: Allow SSH
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+      Tags:
+        - Key: Name
+          Value: !Sub ${END}-APP-SERVER-SECURITY-GROUP
+      VpcId: !Ref VPC
+
   ApplicationLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -173,6 +200,8 @@ Resources:
       KeyName: jumpbox-key
       LaunchConfigurationName: !Join ["-", [!Ref "AWS::Region", dev-app-launch-configuration]]
       PlacementTenancy: default
+      SecurityGroups:
+        - !Ref ApplicationServerSecurityGroup
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
