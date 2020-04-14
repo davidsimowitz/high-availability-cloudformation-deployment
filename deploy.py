@@ -2,16 +2,35 @@
 
 
 """
-AWS CloudFormation deploy script
+AWS CloudFormation deployment script
+
+COMMAND is either 'create', 'update', or 'delete'.
+
+CONFIG_FILE contains the infrastructure stack details in
+the following JSON format:
+
+{
+    "name": "STACK_NAME",
+    "region": "REGION",
+    "template": "CLOUDFORMATION_TEMPLATE_FILE.yml",
+    "parameters": "CLOUDFORMATION_PARAMETERS_FILE.json"
+}
 """
 
 
+import json
 import os
 
 
-def deploy_stack():
+def deploy_stack(config_file, command):
     """deploy infrastructure as specified in CloudFormation template"""
-    pass
+    try:
+        with open(config_file) as config:
+            stack = json.load(config)
+    except (FileNotFoundError, IsADirectoryError, PermissionError) as err:
+        click.echo(f"ERROR: {err}")
+    else:
+        exec(f'{command}_stack(**stack)')
 
 
 def create_stack(name, template, parameters, region):
@@ -34,7 +53,7 @@ def update_stack(name, template, parameters, region):
                   f' --region={region}')
 
 
-def delete_stack(name):
+def delete_stack(name, **kwargs):
     """delete specified stack"""
     os.system(f'aws cloudformation delete-stack'
                   f' --stack-name {name}')
