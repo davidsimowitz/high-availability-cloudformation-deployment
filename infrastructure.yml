@@ -17,6 +17,11 @@ Parameters:
     Type: String
     Default: 10.0.0.0/24
 
+  AllTraffic:
+    Description: IP range (CIDR notation) for allowing all traffic.
+    Type: String
+    Default: 0.0.0.0/0
+
 Resources:
 
   VPC:
@@ -60,3 +65,17 @@ Resources:
         - Key: Name
           Value: !Sub ${ENV}-PUB-ROUTES
       VpcId: !Ref VPC
+
+  PublicRouteDefault:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: !Ref AllTraffic
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref PublicRouteTable
+    DependsOn: InternetGatewayAttachment
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet1
