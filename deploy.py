@@ -4,7 +4,7 @@
 """
 AWS CloudFormation deployment script
 
-COMMAND is either 'create', 'update', or 'delete'.
+COMMAND is either 'CREATE', 'UPDATE', or 'DELETE'.
 
 CONFIG_FILE contains the infrastructure stack details in
 the following JSON format:
@@ -18,6 +18,7 @@ the following JSON format:
 """
 
 
+import click
 import json
 import os
 
@@ -57,3 +58,20 @@ def delete_stack(name, **kwargs):
     """delete specified stack"""
     os.system(f'aws cloudformation delete-stack'
                   f' --stack-name {name}')
+
+
+@click.command()
+@click.argument('config-file')
+@click.option('-c', '--command', required=True, default='update',
+               type=click.Choice(['create', 'update', 'delete'],
+               case_sensitive=False))
+def cli(*, config_file, command):
+    """Deploy infrastructure specified in CONFIG_FILE
+
+    CONFIG_FILE contains the infrastructure stack details in JSON format.
+    """
+    deploy_stack(config_file, command)
+
+
+if __name__ == '__main__':
+    cli()
