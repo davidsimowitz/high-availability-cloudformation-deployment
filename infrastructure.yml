@@ -101,3 +101,55 @@ Resources:
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet2
+
+  UdacityS3ReadOnlyEC2:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        }
+      Description: Pull down latest development app from S3 bucket to server.
+      RoleName: !Join ["-", [!Ref "AWS::Region", dev-app-downloader]]
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-APP-DOWNLOADER
+
+  ProfileWithRolesForOurApp:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Join ["-", [!Ref "AWS::Region", dev-app-instance-profile]]
+      Roles:
+        - !Ref UdacityS3ReadOnlyEC2
+    DependsOn: UdacityS3ReadOnlyEC2
+
+  S3ReadOnlyAccessPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: S3ReadOnly
+      PolicyDocument:
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:Get*",
+                        "s3:List*"
+                    ],
+                    "Resource": "*"
+                }
+            ]
+        }
+      Roles:
+        - !Ref UdacityS3ReadOnlyEC2
+    DependsOn: UdacityS3ReadOnlyEC2
