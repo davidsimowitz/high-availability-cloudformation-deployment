@@ -24,9 +24,14 @@ def create_stack(name, template, parameters, region):
                   f' --region={region}')
 
 
-def update_stack():
+def update_stack(name, template, parameters, region):
     """update stack as specified in CloudFormation template"""
-    pass
+    os.system(f'aws cloudformation update-stack'
+                  f' --stack-name {name}'
+                  f' --template-body file://{template}'
+                  f' --parameters file://{parameters}'
+                  f' --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"'
+                  f' --region={region}')
 
 
 def delete_stack():
