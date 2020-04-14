@@ -1,0 +1,6 @@
+{
+    "name": "Udacity-IaC-Project",
+    "region": "us-west-2",
+    "template": "infrastructure.yml",
+    "parameters": "parameters.json"
+}
