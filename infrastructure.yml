@@ -1,15 +1,25 @@
 Description: >
   High-Availability Deployment Configuration.
 
+Parameters:
+
+  ENV:
+    Description: Environment name.
+    Type: String
+
+  VpcCidr:
+    Description: IP range (CIDR notation) for this VPC.
+    Type: String
+    Default: 10.0.0.0/16
+
 Resources:
 
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.0.0.0/16
+      CidrBlock: !Ref VpcCidr
       EnableDnsHostnames: true
       EnableDnsSupport: true
       Tags:
         - Key: Name
-          Value: DEV-VPC
-
+          Value: !Sub ${ENV}-VPC
