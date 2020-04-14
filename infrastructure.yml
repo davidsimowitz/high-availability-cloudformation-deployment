@@ -12,6 +12,11 @@ Parameters:
     Type: String
     Default: 10.0.0.0/16
 
+  PublicSubnetCidr1:
+    Description: IP range (CIDR notation) for Public Subnet in 1st Availability Zone.
+    Type: String
+    Default: 10.0.0.0/24
+
 Resources:
 
   VPC:
@@ -23,3 +28,14 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ENV}-VPC
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnetCidr1
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PUB-SUBNET-1
+      VpcId: !Ref VPC
