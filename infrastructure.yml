@@ -233,7 +233,7 @@ Resources:
   ProfileWithRolesForOurApp:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      InstanceProfileName: !Join ["-", [!Ref "AWS::Region", dev-app-instance-profile]]
+      InstanceProfileName: !Join ["-", [!Ref ENV, app-instance-profile, !Ref "AWS::Region"]]
       Roles:
         - !Ref UdacityS3ReadOnlyEC2
     DependsOn: UdacityS3ReadOnlyEC2
