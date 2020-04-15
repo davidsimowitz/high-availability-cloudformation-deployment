@@ -339,6 +339,7 @@ Resources:
           cd /var/www/html
           aws s3 cp s3://udacity-demo-1/udacity.zip .
           unzip -o udacity.zip
+          sed -i 's/It Works!/It works! Udagram, Udacity/g' index.html
 
   ApplicationServerAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
