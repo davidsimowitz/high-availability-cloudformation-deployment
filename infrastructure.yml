@@ -419,7 +419,7 @@ Resources:
 Outputs:
 
   VPC:
-    Description: VPC reference
+    Description: Reference to virtual private cloud
     Value: !Ref VPC
     Export:
       Name: !Sub ${ENV}-VPC-ID
@@ -437,13 +437,13 @@ Outputs:
       Name: !Sub ${ENV}-PUB-NET-2
 
   PublicSubnets:
-    Description: List of references of public subnets.
+    Description: Reference list of public subnets
     Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
     Export:
       Name: !Sub ${ENV}-PUB-NETS
 
   PrivateSubnets:
-    Description: List of references of private subnets.
+    Description: Reference list of private subnets
     Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
     Export:
       Name: !Sub ${ENV}-PRIV-NETS
