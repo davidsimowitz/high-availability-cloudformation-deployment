@@ -15,6 +15,13 @@ Infrastructure Diagram
 ![High-Availability Web Application Infrastructure Diagram](https://github.com/davidsimowitz/high-availability-deployment/blob/master/project-infrastructure-diagram.jpeg)
 
 
+Application Load Balancer URL
+-----------------------------
+
++ Access the high availability web app using the [DNS name address](http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com) of the application load balancer.
+  * http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com
+
+
 Requirements
 ------------
 
@@ -25,40 +32,6 @@ Requirements
 + The [AWS Command Line Interface](https://aws.amazon.com/cli/) for running the Cloudformation script
 
 + [Python 3](https://www.python.org/downloads/) and [click](https://pypi.org/project/click/) if using the supplied deployment script.
-
-
-Usage
------
-
-+ Run the CloudFormation script from the terminal(bash) using one of the following methods:
-  * If you have Python 3 (Python 3.6+) installed, use the supplied deployment script:
-      ```bash
-      $ ./deploy.py -c create config.json
-      ```
-  * Using the supplied shell script:
-      ```bash
-      $ ./create.sh Udacity-IaC-Project infrastructure.yml parameters.json
-      ```
-  * Directly from the terminal:
-      ```bash
-      $ aws cloudformation create-stack --stack-name Udacity-IaC-Project --template-body file://infrastructure.yml --parameters file://parameters.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=us-west-2
-      ```
-
-+ To update the CloudFormation stack (after it has been created and only after the template/parameters have been modified) use one of the following methods:
-  * If you have Python 3 (Python 3.6+) installed, use the supplied deployment script:
-      ```bash
-      $ ./deploy.py -c update config.json
-      ```
-  * Using the supplied shell script:
-      ```bash
-      $ ./update.sh Udacity-IaC-Project infrastructure.yml parameters.json
-      ```
-  * Directly from the terminal:
-      ```bash
-      $ aws cloudformation update-stack --stack-name Udacity-IaC-Project --template-body file://infrastructure.yml --parameters file://parameters.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=us-west-2
-      ```
-
-+ Access the high availability web app using the [DNS name address](http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com) of the application load balancer.
 
 
 Files
@@ -76,10 +49,43 @@ Files
 + update.sh
 
 
-Application Load Balancer URL
------------------------------
+Usage
+=====
 
-+ http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com
+
+Create CloudFormation Stack
+---------------------------
+
++ Run the CloudFormation script from the terminal(bash) using one of the following methods:
+  * If you have Python 3 (Python 3.6+) installed, use the supplied deployment script:
+      ```bash
+      $ ./deploy.py -c create config.json
+      ```
+  * Using the supplied shell script:
+      ```bash
+      $ ./create.sh Udacity-IaC-Project infrastructure.yml parameters.json
+      ```
+  * Directly from the terminal:
+      ```bash
+      $ aws cloudformation create-stack --stack-name Udacity-IaC-Project --template-body file://infrastructure.yml --parameters file://parameters.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=us-west-2
+      ```
+
+
+Update CloudFormation Stack
+---------------------------
++ To update the CloudFormation stack (after it has been created and only after the template/parameters have been modified) use one of the following methods:
+  * If you have Python 3 (Python 3.6+) installed, use the supplied deployment script:
+      ```bash
+      $ ./deploy.py -c update config.json
+      ```
+  * Using the supplied shell script:
+      ```bash
+      $ ./update.sh Udacity-IaC-Project infrastructure.yml parameters.json
+      ```
+  * Directly from the terminal:
+      ```bash
+      $ aws cloudformation update-stack --stack-name Udacity-IaC-Project --template-body file://infrastructure.yml --parameters file://parameters.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=us-west-2
+      ```
 
 
 Delete CloudFormation Stack
