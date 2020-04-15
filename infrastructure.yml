@@ -318,7 +318,7 @@ Resources:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       ImageId: ami-0d1cd67c26f5fca19
       InstanceMonitoring: true
-      InstanceType: t2.micro
+      InstanceType: t2.medium
       KeyName: private-server-devops-key
       PlacementTenancy: default
       SecurityGroups:
@@ -338,12 +338,13 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: !Join ["-", [!Ref ENV, AUTO-SCALING-GROUP, !Ref "AWS::Region"]]
-      Cooldown: 300
-      HealthCheckGracePeriod: 60
+      Cooldown: 60
+      DesiredCapacity: 4
+      HealthCheckGracePeriod: 240
       HealthCheckType: EC2
       LaunchConfigurationName: !Ref ApplicationLaunchConfiguration
-      MaxSize: 1
-      MinSize: 1
+      MaxSize: 8
+      MinSize: 4
       Tags:
         - Key: Name
           PropagateAtLaunch: true
@@ -373,15 +374,15 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckEnabled: true
-      HealthCheckIntervalSeconds: 30
+      HealthCheckIntervalSeconds: 10
       HealthCheckPath: /
       HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 10
+      HealthCheckTimeoutSeconds: 8
       HealthyThresholdCount: 2
       Port: 80
       Protocol: HTTP
       TargetType: instance
-      UnhealthyThresholdCount: 6
+      UnhealthyThresholdCount: 5
       VpcId: !Ref VPC
 
   ApplicationLoadBalancerListener:
