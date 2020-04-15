@@ -158,6 +158,50 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet2
 
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PRIV-ROUTES-1
+      VpcId: !Ref VPC
+
+  PrivateRouteDefault1:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: !Ref AllTraffic
+      NatGatewayId: !Ref NatGateway1
+      RouteTableId: !Ref PrivateRouteTable1
+    DependsOn: InternetGatewayAttachment
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      SubnetId: !Ref PrivateSubnet1
+
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PRIV-ROUTES-2
+      VpcId: !Ref VPC
+
+  PrivateRouteDefault2:
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: !Ref AllTraffic
+      NatGatewayId: !Ref NatGateway2
+      RouteTableId: !Ref PrivateRouteTable2
+    DependsOn: InternetGatewayAttachment
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      SubnetId: !Ref PrivateSubnet2
+
   UdacityS3ReadOnlyEC2:
     Type: AWS::IAM::Role
     Properties:
