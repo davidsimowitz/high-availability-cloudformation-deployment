@@ -319,7 +319,7 @@ Resources:
       ImageId: ami-0d1cd67c26f5fca19
       InstanceMonitoring: true
       InstanceType: t2.micro
-      KeyName: jumpbox-key
+      KeyName: private-server-devops-key
       PlacementTenancy: default
       SecurityGroups:
         - !Ref ApplicationServerSecurityGroup
@@ -351,7 +351,7 @@ Resources:
       TargetGroupARNs:
         - !Ref ApplicationLoadBalancerTargetGroup
       VPCZoneIdentifier:
-        - !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
+        - !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
 
   ApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
