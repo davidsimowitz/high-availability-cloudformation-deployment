@@ -429,3 +429,9 @@ Outputs:
     Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
     Export:
       Name: !Sub ${ENV}-PUB-NETS
+
+  PrivateSubnets:
+    Description: List of references of private subnets.
+    Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
+    Export:
+      Name: !Sub ${ENV}-PRIV-NETS
