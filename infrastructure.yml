@@ -338,10 +338,10 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: !Join ["-", [!Ref ENV, AUTO-SCALING-GROUP, !Ref "AWS::Region"]]
-      Cooldown: 60
+      Cooldown: 300
       DesiredCapacity: 4
       HealthCheckGracePeriod: 240
-      HealthCheckType: EC2
+      HealthCheckType: ELB
       LaunchConfigurationName: !Ref ApplicationLaunchConfiguration
       MaxSize: 8
       MinSize: 4
