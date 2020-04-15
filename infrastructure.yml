@@ -264,7 +264,6 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow HTTP
-      GroupName: !Join ["-", [!Ref ENV, load-balancer-security-group, !Ref "AWS::Region"]]
       SecurityGroupEgress:
         - CidrIp: !Ref AllAddresses
           Description: Allow HTTP
@@ -286,7 +285,6 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow HTTP
-      GroupName: !Join ["-", [!Ref ENV, app-server-security-group, !Ref "AWS::Region"]]
       SecurityGroupEgress:
         - CidrIp: !Ref AllAddresses
           Description: Allow all outgoing traffic
@@ -338,7 +336,6 @@ Resources:
   ApplicationServerAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      AutoScalingGroupName: !Join ["-", [!Ref ENV, auto-scaling-group, !Ref "AWS::Region"]]
       Cooldown: 300
       DesiredCapacity: 4
       HealthCheckGracePeriod: 240
@@ -350,6 +347,9 @@ Resources:
         - Key: Name
           PropagateAtLaunch: true
           Value: !Sub ${ENV}-APP-SERVER
+        - Key: Group
+          PropagateAtLaunch: true
+          Value: !Join ["-", [!Ref ENV, auto-scaling-group, !Ref "AWS::Region"]]
       TargetGroupARNs:
         - !Ref ApplicationLoadBalancerTargetGroup
       VPCZoneIdentifier:
