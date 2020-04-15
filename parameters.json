@@ -26,5 +26,9 @@
   {
     "ParameterKey": "AllTraffic",
     "ParameterValue": "0.0.0.0/0"
+  },
+  {
+    "ParameterKey": "ServerInstance",
+    "ParameterValue": "t3.medium"
   }
 ]

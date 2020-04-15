@@ -37,6 +37,11 @@ Parameters:
     Type: String
     Default: 0.0.0.0/0
 
+  ServerInstance:
+    Description: Application server instance type.
+    Type: String
+    Default: t3.medium
+
 Resources:
 
   VPC:
@@ -318,7 +323,7 @@ Resources:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       ImageId: ami-0d1cd67c26f5fca19
       InstanceMonitoring: true
-      InstanceType: t2.medium
+      InstanceType: !Ref ServerInstance
       KeyName: private-server-devops-key
       PlacementTenancy: default
       SecurityGroups:
