@@ -285,7 +285,7 @@ Resources:
   ApplicationServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Allow HTTP and SSH
+      GroupDescription: Allow HTTP
       GroupName: !Join ["-", [!Ref ENV, app-server-security-group, !Ref "AWS::Region"]]
       SecurityGroupEgress:
         - CidrIp: !Ref AllAddresses
@@ -299,11 +299,6 @@ Resources:
           FromPort: 80
           IpProtocol: tcp
           ToPort: 80
-        - CidrIp: !Ref AllAddresses
-          Description: Allow SSH
-          FromPort: 22
-          IpProtocol: tcp
-          ToPort: 22
       Tags:
         - Key: Name
           Value: !Sub ${ENV}-APP-SERVER-SECURITY-GROUP
