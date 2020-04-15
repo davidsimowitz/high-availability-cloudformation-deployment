@@ -6,6 +6,7 @@ Parameters:
   ENV:
     Description: Environment name.
     Type: String
+    Default: DEV
 
   VpcCidr:
     Description: IP range (CIDR notation) for this VPC.
