@@ -18,8 +18,8 @@ Infrastructure Diagram
 Application Load Balancer URL
 -----------------------------
 
-+ Access the high availability web app using the [DNS name address](http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com) of the application load balancer.
-  * http://DEV-LOAD-BALANCER-us-west-2-1571534536.us-west-2.elb.amazonaws.com
++ Access the high availability web app using the [DNS name address](http://DEV-LOAD-BALANCER-us-west-2-1498149821.us-west-2.elb.amazonaws.com) of the application load balancer.
+  * http://DEV-LOAD-BALANCER-us-west-2-1498149821.us-west-2.elb.amazonaws.com
 
 
 Requirements
