@@ -343,7 +343,7 @@ Resources:
   ApplicationServerAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      AutoScalingGroupName: !Join ["-", [!Ref ENV, AUTO-SCALING-GROUP, !Ref "AWS::Region"]]
+      AutoScalingGroupName: !Join ["-", [!Ref ENV, auto-scaling-group, !Ref "AWS::Region"]]
       Cooldown: 300
       DesiredCapacity: 4
       HealthCheckGracePeriod: 240
