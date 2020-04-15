@@ -465,3 +465,15 @@ Outputs:
     Value: !Ref PublicRouteTable
     Export:
       Name: !Sub ${ENV}-PUB-RT
+
+  PrivateRouteTable1:
+    Description: Reference to private route table in first availability zone
+    Value: !Ref PrivateRouteTable1
+    Export:
+      Name: !Sub ${ENV}-PRIV-RT-1
+
+  PrivateRouteTable2:
+    Description: Reference to private route table in second availability zone
+    Value: !Ref PrivateRouteTable2
+    Export:
+      Name: !Sub ${ENV}-PRIV-RT-2
