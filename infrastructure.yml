@@ -459,3 +459,9 @@ Outputs:
     Value: !Join [ ",", [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]]
     Export:
       Name: !Sub ${ENV}-PRIV-NETS
+
+  PublicRouteTable:
+    Description: Reference to public route table in vpc
+    Value: !Ref PublicRouteTable
+    Export:
+      Name: !Sub ${ENV}-PUB-RT
