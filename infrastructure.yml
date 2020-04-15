@@ -33,8 +33,8 @@ Parameters:
     Type: String
     Default: 10.0.3.0/24
 
-  AllTraffic:
-    Description: IP range (CIDR notation) for allowing all traffic.
+  AllAddresses:
+    Description: IP range (CIDR notation) representing all addresses in IPv4 space.
     Type: String
     Default: 0.0.0.0/0
 
@@ -147,7 +147,7 @@ Resources:
   PublicRouteDefault:
     Type: AWS::EC2::Route
     Properties:
-      DestinationCidrBlock: !Ref AllTraffic
+      DestinationCidrBlock: !Ref AllAddresses
       GatewayId: !Ref InternetGateway
       RouteTableId: !Ref PublicRouteTable
     DependsOn: InternetGatewayAttachment
@@ -175,7 +175,7 @@ Resources:
   PrivateRouteDefault1:
     Type: AWS::EC2::Route
     Properties:
-      DestinationCidrBlock: !Ref AllTraffic
+      DestinationCidrBlock: !Ref AllAddresses
       NatGatewayId: !Ref NatGateway1
       RouteTableId: !Ref PrivateRouteTable1
     DependsOn: InternetGatewayAttachment
@@ -197,7 +197,7 @@ Resources:
   PrivateRouteDefault2:
     Type: AWS::EC2::Route
     Properties:
-      DestinationCidrBlock: !Ref AllTraffic
+      DestinationCidrBlock: !Ref AllAddresses
       NatGatewayId: !Ref NatGateway2
       RouteTableId: !Ref PrivateRouteTable2
     DependsOn: InternetGatewayAttachment
@@ -266,13 +266,13 @@ Resources:
       GroupDescription: Allow HTTP
       GroupName: !Join ["-", [!Ref ENV, load-balancer-security-group, !Ref "AWS::Region"]]
       SecurityGroupEgress:
-        - CidrIp: 0.0.0.0/0
+        - CidrIp: !Ref AllAddresses
           Description: Allow HTTP
           FromPort: 80
           IpProtocol: tcp
           ToPort: 80
       SecurityGroupIngress:
-        - CidrIp: 0.0.0.0/0
+        - CidrIp: !Ref AllAddresses
           Description: Allow HTTP
           FromPort: 80
           IpProtocol: tcp
@@ -288,18 +288,18 @@ Resources:
       GroupDescription: Allow HTTP and SSH
       GroupName: !Join ["-", [!Ref ENV, app-server-security-group, !Ref "AWS::Region"]]
       SecurityGroupEgress:
-        - CidrIp: 0.0.0.0/0
+        - CidrIp: !Ref AllAddresses
           Description: Allow all outgoing traffic
           FromPort: 0
           IpProtocol: tcp
           ToPort: 65535
       SecurityGroupIngress:
-        - CidrIp: 0.0.0.0/0
+        - CidrIp: !Ref AllAddresses
           Description: Allow HTTP
           FromPort: 80
           IpProtocol: tcp
           ToPort: 80
-        - CidrIp: 0.0.0.0/0
+        - CidrIp: !Ref AllAddresses
           Description: Allow SSH
           FromPort: 22
           IpProtocol: tcp
