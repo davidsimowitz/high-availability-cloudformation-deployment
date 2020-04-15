@@ -22,6 +22,16 @@ Parameters:
     Type: String
     Default: 10.0.1.0/24
 
+  PrivateSubnetCidr1:
+    Description: IP range (CIDR notation) for Private Subnet in 1st Availability Zone.
+    Type: String
+    Default: 10.0.2.0/24
+
+  PrivateSubnetCidr2:
+    Description: IP range (CIDR notation) for Private Subnet in 2nd Availability Zone.
+    Type: String
+    Default: 10.0.3.0/24
+
   AllTraffic:
     Description: IP range (CIDR notation) for allowing all traffic.
     Type: String
@@ -72,6 +82,28 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ENV}-PUB-SUBNET-2
+      VpcId: !Ref VPC
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PrivateSubnetCidr1
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PRIV-SUBNET-1
+      VpcId: !Ref VPC
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      CidrBlock: !Ref PrivateSubnetCidr2
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-PRIV-SUBNET-2
       VpcId: !Ref VPC
 
   PublicRouteTable:
