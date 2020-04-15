@@ -423,3 +423,9 @@ Outputs:
     Value: !Ref VPC
     Export:
       Name: !Sub ${ENV}-VPC-ID
+
+  PublicSubnets:
+    Description: List of references of public subnets.
+    Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
+    Export:
+      Name: !Sub ${ENV}-PUB-NETS
