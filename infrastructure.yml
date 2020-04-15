@@ -424,6 +424,18 @@ Outputs:
     Export:
       Name: !Sub ${ENV}-VPC-ID
 
+  PublicSubnet1:
+    Description: Reference to public subnet in first availability zone
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: !Sub ${ENV}-PUB-NET-1
+
+  PublicSubnet2:
+    Description: Reference to public subnet in second availability zone
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: !Sub ${ENV}-PUB-NET-2
+
   PublicSubnets:
     Description: List of references of public subnets.
     Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
