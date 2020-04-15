@@ -154,6 +154,28 @@ Resources:
         - !Ref UdacityS3ReadOnlyEC2
     DependsOn: UdacityS3ReadOnlyEC2
 
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP
+      GroupName: !Join ["-", [!Ref ENV, load-balancer-security-group, !Ref "AWS::Region"]]
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow HTTP
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow HTTP
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-LOAD-BALANCER-SECURITY-GROUP
+      VpcId: !Ref VPC
+
   ApplicationServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -178,7 +200,7 @@ Resources:
           ToPort: 22
       Tags:
         - Key: Name
-          Value: !Sub ${END}-APP-SERVER-SECURITY-GROUP
+          Value: !Sub ${ENV}-APP-SERVER-SECURITY-GROUP
       VpcId: !Ref VPC
 
   ApplicationLaunchConfiguration:
@@ -198,7 +220,6 @@ Resources:
       InstanceMonitoring: true
       InstanceType: t2.micro
       KeyName: jumpbox-key
-      LaunchConfigurationName: !Join ["-", [!Ref "AWS::Region", dev-app-launch-configuration]]
       PlacementTenancy: default
       SecurityGroups:
         - !Ref ApplicationServerSecurityGroup
@@ -227,5 +248,62 @@ Resources:
         - Key: Name
           PropagateAtLaunch: true
           Value: !Sub ${ENV}-APP-SERVER
+      TargetGroupARNs:
+        - !Ref ApplicationLoadBalancerTargetGroup
       VPCZoneIdentifier:
         - !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
+
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: !Join ["-", [!Ref ENV, LOAD-BALANCER, !Ref "AWS::Region"]]
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+      Subnets:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub ${ENV}-APP-LOAD-BALANCER
+      Type: application
+
+  ApplicationLoadBalancerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
+      Port: 80
+      Protocol: HTTP
+      TargetType: instance
+      UnhealthyThresholdCount: 6
+      VpcId: !Ref VPC
+
+  ApplicationLoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+    DependsOn: ApplicationLoadBalancerTargetGroup
+
+  ApplicationLoadBalancerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+          Type: forward
+      Conditions:
+        - Field: path-pattern
+          Values: [/]
+      ListenerArn: !Ref ApplicationLoadBalancerListener
+      Priority: 1
+    DependsOn: ApplicationLoadBalancerListener
