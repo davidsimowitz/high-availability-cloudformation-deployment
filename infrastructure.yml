@@ -106,6 +106,30 @@ Resources:
           Value: !Sub ${ENV}-PRIV-SUBNET-2
       VpcId: !Ref VPC
 
+  EipAddressNatGateway1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    DependsOn: InternetGatewayAttachment
+
+  NatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt EipAddressNatGateway1.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
+  EipAddressNatGateway2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    DependsOn: InternetGatewayAttachment
+
+  NatGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt EipAddressNatGateway2.AllocationId
+      SubnetId: !Ref PublicSubnet2
+
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
