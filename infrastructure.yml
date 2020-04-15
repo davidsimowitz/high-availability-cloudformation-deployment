@@ -418,6 +418,12 @@ Resources:
 
 Outputs:
 
+  ApplicationLoadBalancerURL:
+    Description: URL to application load balancer DNS name address
+    Value: !Join ["", ["http://", !GetAtt ApplicationLoadBalancer.DNSName]]
+    Export:
+      Name: !Sub ${ENV}-ALB-URL
+
   VPC:
     Description: Reference to virtual private cloud
     Value: !Ref VPC
