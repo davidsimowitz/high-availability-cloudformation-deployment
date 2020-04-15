@@ -325,7 +325,6 @@ Resources:
       ImageId: ami-0d1cd67c26f5fca19
       InstanceMonitoring: true
       InstanceType: !Ref ServerInstance
-      KeyName: private-server-devops-key
       PlacementTenancy: default
       SecurityGroups:
         - !Ref ApplicationServerSecurityGroup
