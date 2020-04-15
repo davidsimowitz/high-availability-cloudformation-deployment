@@ -415,3 +415,11 @@ Resources:
       ListenerArn: !Ref ApplicationLoadBalancerListener
       Priority: 1
     DependsOn: ApplicationLoadBalancerListener
+
+Outputs:
+
+  VPC:
+    Description: VPC reference
+    Value: !Ref VPC
+    Export:
+      Name: !Sub ${ENV}-VPC-ID
