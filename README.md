@@ -9,6 +9,12 @@ Deploy Infrastructure as Code Project: Deploy a High-Availability Web App using 
 In this project, you’ll deploy web servers for a highly available web app using CloudFormation. You will write the code that creates and deploys the infrastructure and application for an Instagram-like app from the ground up. You will begin with deploying the networking components, followed by servers, security roles and software. The procedure you follow here will become part of your portfolio of cloud projects. You’ll do it exactly as it’s done on the job - following best practices and scripting as much as possible.
 
 
+Infrastructure Diagram
+----------------------
+
+![High-Availability Web Application Infrastructure Diagram](https://github.com/davidsimowitz/high-availability-deployment/blob/master/project-infrastructure-diagram.jpeg)
+
+
 Requirements
 ------------
 
@@ -64,6 +70,7 @@ Files
 + deploy.py
 + infrastructure.yml
 + parameters.json
++ project-infrastructure-diagram.jpeg
 + project-infrastructure-diagram.pdf
 + README.md
 + update.sh
